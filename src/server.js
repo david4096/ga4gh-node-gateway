@@ -1,9 +1,9 @@
 var grpc = require('grpc');
-var fs = require('fs');
 var controllers = require('./controllers');
 var protocol = require('./protocol');
+var express = require('express');
 
-var namespace = 'ga4gh';
+var bodyParser = require('body-parser');
 
 // FIXME a hack that is part of allowing mock methods for each service endpoint.
 // Could be removed with a better usage of the grpc API for making method maps
@@ -12,7 +12,7 @@ var namespace = 'ga4gh';
 
 function firstToLower(str) {
   // http://stackoverflow.com/questions/1026069/capitalize-the-first-letter-of-string-in-javascript
-  return str[0].toLowerCase() + str.substring(1)
+  return str[0].toLowerCase() + str.substring(1);
 }
 
 // Allows us to define methods as we go and hook them up by name to the schemas.
@@ -38,6 +38,33 @@ function buildMethodMap(methods) {
     methodMap[firstToLower(method.name)] = getMethod(firstToLower(method.name));
   });
   return methodMap;
+}
+
+// TODO move to a express middleware
+// takes the app and protobuf descriptors and add HTTP routes where needed
+// TODO use http descriptor proto to keep version parity, instead of hardcoding
+//     key values "(google.api.http).post"
+function createProxy(app, descriptors) {
+  descriptors.forEach(function(descriptor, i) {
+    descriptor[namespace][services[i]].service.children.forEach(function(endpoint) {
+      if (endpoint.options['(google.api.http).post']) {
+        app.post(endpoint.options['(google.api.http).post'], function(req, res) {
+          getMethod(firstToLower(endpoint.name))({request: req.body}, function(err, doc) {
+            res.send(doc);
+            res.end()
+          });
+        });
+        ;
+      } else {
+        app.get(endpoint.options['(google.api.http).get'], function(req, res) {
+          getMethod(firstToLower(endpoint.name))(req, function(err, doc) {
+            res.send(doc);
+            res.end();
+          });
+        });
+      }
+    });
+  });
 }
 
 function loadServer() {
@@ -68,20 +95,12 @@ if (require.main === module) {
     });
     return keys[0];
   })
-  console.log(services);
-  // TODO HTTP proxy
-  // Can get the URLs this way
-  // We'll make them for each service
-  //console.log(descriptors);
-  var url = descriptors[0][namespace][services[0]].service.children[0].options['(google.api.http).post'];
-  //console.log(descriptors[0][namespace][services[0]].service.children[0].options['(google.api.http).post'])
-  var express = require('express');
+  
   var app = express();
-  // TODO Dynamically generate routes... it's not as pretty as swagger but fewer moving parts
-  app.post(url, function (req, res) {
-    res.send('Hello World!');
-  });
-
+  app.use(bodyParser.json());
+  
+  createProxy(app, descriptors);
+  
   app.listen(3000, function () {
     console.log('Example app listening on port 3000!');
   });
