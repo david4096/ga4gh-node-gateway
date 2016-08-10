@@ -16,14 +16,14 @@ function firstToLower(str) {
 }
 
 // Allows us to define methods as we go and hook them up by name to the schemas.
-// It should be possible to determine if a method is streaming or not and get it from a different
-// controller.
+// It should be possible to determine if a method is streaming or not and get it
+//from a different controller.
 function getMethod(methodname) {
   if (controllers[methodname]) {
     return controllers[methodname];
   } else {
     return function(call, callback) {
-      // By default we print an empty response and log to the command line.
+      // By default we print an empty response.
       callback(null, {})
     }
   }
@@ -48,6 +48,8 @@ function createProxy(app, descriptors) {
   descriptors.forEach(function(descriptor, i) {
     descriptor[namespace][services[i]].service.children.forEach(function(endpoint) {
       if (endpoint.options['(google.api.http).post']) {
+        console.log(endpoint.name);
+        console.log(endpoint.options['(google.api.http).post']);
         app.post(endpoint.options['(google.api.http).post'], function(req, res) {
           getMethod(firstToLower(endpoint.name))({request: req.body}, function(err, doc) {
             res.send(doc);
@@ -71,6 +73,8 @@ function loadServer() {
   var descriptors = protocol.loadDescriptors();
   var server = new grpc.Server();
   descriptors.forEach(function(descriptor) {
+    // TODO figure out a better way of filtering out the service descriptors
+    // or at least refactor out
     var keys = Object.keys(descriptor[namespace]).filter(function(key){
       return key.indexOf('Service') != -1;
     });
@@ -86,8 +90,6 @@ if (require.main === module) {
   var server = loadServer();
   server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
   server.start();
-  
-  // OK so the grpc works more or less let's see about setting up some kind of proxy
   var descriptors = protocol.loadDescriptors();
   var services = descriptors.map(function(descriptor) {
     var keys = Object.keys(descriptor[namespace]).filter(function(key){
@@ -96,6 +98,7 @@ if (require.main === module) {
     return keys[0];
   })
   
+  // Set up express and attach the methods.
   var app = express();
   app.use(bodyParser.json());
   
