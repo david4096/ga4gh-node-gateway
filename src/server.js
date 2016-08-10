@@ -17,10 +17,11 @@ function firstToLower(str) {
 
 // Allows us to define methods as we go and hook them up by name to the schemas.
 // It should be possible to determine if a method is streaming or not and get it
-//from a different controller.
+// from a different controller. No maintaining key-value maps!
 function getMethod(methodname) {
-  if (controllers[methodname]) {
-    return controllers[methodname];
+  var lower = firstToLower(methodname);
+  if (controllers[lower]) {
+    return controllers[lower];
   } else {
     return function(call, callback) {
       // By default we print an empty response.
@@ -35,14 +36,14 @@ function buildMethodMap(methods) {
   // Makes a fake set of initial methods
   var methodMap = {};
   methods.forEach(function(method) {
-    methodMap[firstToLower(method.name)] = getMethod(firstToLower(method.name));
+    methodMap[firstToLower(method.name)] = getMethod(method.name);
   });
   return methodMap;
 }
 
 function expressHandler(endpoint) {
   return function(req, res) {
-    getMethod(firstToLower(endpoint.name))({request: req.body}, function(err, doc) {
+    getMethod(endpoint.name)({request: req.body}, function(err, doc) {
       res.send(doc);
       res.end()
     });
@@ -51,7 +52,7 @@ function expressHandler(endpoint) {
 
 function expressGetHandler(endpoint) {
   return function(req, res) {
-    getMethod(firstToLower(endpoint.name))({request: req.params}, function(err, doc) {
+    getMethod(endpoint.name)({request: req.params}, function(err, doc) {
       res.send(doc);
       res.end()
     });
