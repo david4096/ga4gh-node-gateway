@@ -63,8 +63,7 @@ function expressGetHandler(endpoint) {
 // takes the app and protobuf descriptors and add HTTP routes where needed
 // TODO use http descriptor proto to keep version parity, instead of hardcoding
 //     key values "(google.api.http).post"
-function createProxy(app, descriptors) {
-  var services = protocol.services();
+function createProxy(app, services) {
   // Reflect on the service keys to generate HTTP endpoints
   Object.keys(services).forEach(function(name, i) {
     services[name].service.children.forEach(function(endpoint) {
@@ -78,8 +77,7 @@ function createProxy(app, descriptors) {
   });
 }
 
-function loadServer() {
-  var descriptors = protocol.loadDescriptors();
+function loadServer(descriptors) {
   var server = new grpc.Server();
   descriptors.forEach(function(descriptor) {
     // TODO figure out a better way of filtering out the service descriptors
@@ -96,16 +94,17 @@ function loadServer() {
 }
 
 exports.main = function () {
-  var server = loadServer();
+  var descriptors = protocol.loadDescriptors();
+  var server = loadServer(descriptors);
   server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
   server.start();
-  var descriptors = protocol.loadDescriptors();
+  
   
   // Set up express and attach the methods.
   var app = express();
   app.use(bodyParser.json());
   
-  createProxy(app, descriptors);
+  createProxy(app, protocol.services());
   
   app.listen(3000, function () {
     console.log('Example app listening on port 3000!');
