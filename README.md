@@ -18,4 +18,3 @@ What works (or doesn't)?
 
 * Each GA4GH RPC endpoint gives empty responses. An example is available in `src/client.js`.
 * Writing code that matches the RPC signature in the .proto in `src/controllers.js` allows one to immediately prototype queries.
-* A placeholder for a JSON-HTTP fallback has been put in place, but no HTTP 1.1 endpoints are hooked up.

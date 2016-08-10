@@ -1,3 +1,6 @@
+// Protocol takes a directory that specifies gRPC services in some number
+// of files.
+
 var grpc = require('grpc');
 var fs = require('fs');
 
