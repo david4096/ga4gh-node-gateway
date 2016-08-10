@@ -1,7 +1,7 @@
 {
   "name": "ga4gh-node-server",
   "version": "1.0.0",
-  "description": "grpc node server",
+  "description": "An implementation of the GA4GH interface in node.js",
   "scripts": {
     "start": "nodemon --watch schemas/src/main/proto/ga4gh/. --watch src -e proto,js src/server.js",
     "lint": "eslint src"
