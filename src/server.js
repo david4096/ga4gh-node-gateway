@@ -64,17 +64,23 @@ function expressGetHandler(endpoint) {
 // TODO use http descriptor proto to keep version parity, instead of hardcoding
 //     key values "(google.api.http).post"
 function createProxy(app, services) {
+  var endpoints = [];
   // Reflect on the service keys to generate HTTP endpoints
   Object.keys(services).forEach(function(name, i) {
     services[name].service.children.forEach(function(endpoint) {
       if (endpoint.options['(google.api.http).post']) {
+        endpoints.push({url: endpoint.options['(google.api.http).post'], method: 'post'})
         app.post(endpoint.options['(google.api.http).post'], expressHandler(endpoint));
       } else {
         var url = endpoint.options['(google.api.http).get'].replace('{',':').replace('}','');
+        endpoints.push({url: url, method: 'get'})
         app.get(url, expressGetHandler(endpoint));
       }
     });
   });
+  app.get('/endpoints', function(req, res) {
+    res.send({endpoints: endpoints})
+  })
 }
 
 function loadServer(descriptors) {
