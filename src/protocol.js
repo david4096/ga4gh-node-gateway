@@ -11,6 +11,16 @@ function loadProto() {
   return fs.readdirSync(schemasDir + '/ga4gh');
 }
 
+function services() {
+  var descriptors = loadDescriptors();
+  return descriptors.map(function(descriptor) {
+      var keys = Object.keys(descriptor[namespace]).filter(function(key){
+        return key.indexOf('Service') != -1;
+      });
+      return descriptor[namespace][keys[0]];
+    })
+}
+
 function filterServices() {
   // This is a hack that lets us select for just our service files
   // FIXME by loading all the proto in the directory and selecting on class name
@@ -27,4 +37,4 @@ function loadDescriptors() {
   });
 }
 
-module.exports = {loadDescriptors: loadDescriptors}
+module.exports = {loadDescriptors: loadDescriptors, services: services}

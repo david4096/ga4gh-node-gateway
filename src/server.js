@@ -40,30 +40,28 @@ function buildMethodMap(methods) {
   return methodMap;
 }
 
+function expressHandler(endpoint) {
+  return function(req, res) {
+    getMethod(firstToLower(endpoint.name))({request: req.body}, function(err, doc) {
+      res.send(doc);
+      res.end()
+    });
+  }
+}
+
 // TODO move to a express middleware
 // takes the app and protobuf descriptors and add HTTP routes where needed
 // TODO use http descriptor proto to keep version parity, instead of hardcoding
 //     key values "(google.api.http).post"
 function createProxy(app, descriptors) {
-  descriptors.forEach(function(descriptor, i) {
-    descriptor[namespace][services[i]].service.children.forEach(function(endpoint) {
+  var services = protocol.services();
+  // Reflect on the service keys to generate HTTP endpoints
+  Object.keys(services).forEach(function(name, i) {
+    services[name].service.children.forEach(function(endpoint) {
       if (endpoint.options['(google.api.http).post']) {
-        console.log(endpoint.name);
-        console.log(endpoint.options['(google.api.http).post']);
-        app.post(endpoint.options['(google.api.http).post'], function(req, res) {
-          getMethod(firstToLower(endpoint.name))({request: req.body}, function(err, doc) {
-            res.send(doc);
-            res.end()
-          });
-        });
-        ;
+        app.post(endpoint.options['(google.api.http).post'], expressHandler(endpoint));
       } else {
-        app.get(endpoint.options['(google.api.http).get'], function(req, res) {
-          getMethod(firstToLower(endpoint.name))(req, function(err, doc) {
-            res.send(doc);
-            res.end();
-          });
-        });
+        app.get(endpoint.options['(google.api.http).get'], expressHandler(endpoint));
       }
     });
   });
@@ -86,17 +84,12 @@ function loadServer() {
   return server;
 }
 
-if (require.main === module) {
+exports.main = function () {
   var server = loadServer();
   server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
   server.start();
   var descriptors = protocol.loadDescriptors();
-  var services = descriptors.map(function(descriptor) {
-    var keys = Object.keys(descriptor[namespace]).filter(function(key){
-      return key.indexOf('Service') != -1;
-    });
-    return keys[0];
-  })
+
   
   // Set up express and attach the methods.
   var app = express();
@@ -107,6 +100,10 @@ if (require.main === module) {
   app.listen(3000, function () {
     console.log('Example app listening on port 3000!');
   });
+}
+
+if (require.main === module) {
+  exports.main();
 }
 
 
