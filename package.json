@@ -22,7 +22,9 @@
   },
   "homepage": "https://github.com/david4096/ga4gh-node-server",
   "devDependencies": {
+    "chakram": "^1.4.0",
     "eslint": "^1.10.3",
+    "mocha": "^3.0.2",
     "nodemon": "^1.10.0"
   },
   "dependencies": {
