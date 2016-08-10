@@ -8,7 +8,7 @@ var schemasDir = '/Users/david/ga4gh-node-server/schemas/src/main/proto';
 var namespace = 'ga4gh';
 
 function loadProto() {
-  return fs.readdirSync(schemasDir + '/ga4gh');
+  return fs.readdirSync(schemasDir + '/' + namespace);
 }
 
 function services() {

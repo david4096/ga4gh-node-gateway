@@ -10,7 +10,7 @@ We don't have to precompile the schemas, so the protocol buffers are generated d
 
 ## How to use
 
-Run `npm start` and then to see which endpoints your service makes available by visiting [http://localhost:3000/endpoints](http://localhost:3000/endpoints).
+Run `npm install` then `npm start` and then to see which endpoints your service makes available visit: [http://localhost:3000/endpoints](http://localhost:3000/endpoints).
 
 A submodule of the schemas have been added that is tweaked to support this environment. Mainly, the include paths for protobuf.js need to be made available differently than protoc.
 
