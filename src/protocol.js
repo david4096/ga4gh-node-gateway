@@ -4,7 +4,9 @@
 var grpc = require('grpc');
 var fs = require('fs');
 
-var schemasDir = '/Users/david/ga4gh-node-server/schemas/src/main/proto';
+var config = require('../config');
+
+var schemasDir = config.schema_path;
 var namespace = 'ga4gh';
 
 function loadProto() {
@@ -14,6 +16,7 @@ function loadProto() {
 function services() {
   var descriptors = loadDescriptors();
   return descriptors.map(function(descriptor) {
+      // TODO there is a better way ...
       var keys = Object.keys(descriptor[namespace]).filter(function(key){
         return key.indexOf('Service') != -1;
       });

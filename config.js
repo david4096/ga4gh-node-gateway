@@ -5,7 +5,8 @@ var development = {
   },
   http: {
     port: 3001
-  }
+  },
+  schema_path: 'schemas/src/main/proto'
 };
 
 var production = {
@@ -15,7 +16,8 @@ var production = {
   },
   http: {
     port: 8080
-  }
+  },
+  schema_path: 'schemas/src/main/proto'
 };
 
 if (process.env.NODE_ENV == 'production') {
