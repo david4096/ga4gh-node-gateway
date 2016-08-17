@@ -1,5 +1,5 @@
 var express = require('express');
-var controllers = require('./controllers');
+var controllers = require('./controllers/index');
 
 function getMethod(methodname) {
   var lower = firstToLower(methodname);

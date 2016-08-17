@@ -1,5 +1,5 @@
 var grpc = require('grpc');
-var controllers = require('./controllers');
+var controllers = require('./controllers/index');
 
 // FIXME a hack that is part of allowing mock methods for each service endpoint.
 // Could be removed with a better usage of the grpc API for making method maps

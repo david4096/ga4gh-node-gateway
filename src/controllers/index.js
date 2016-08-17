@@ -1,6 +1,6 @@
 var grpc = require('grpc');
 var fs = require('fs');
-var protocol = require('./protocol.js');
+var protocol = require('../protocol');
 
 // Define functions named here as they are in the proto and have them magically executed!
 var descriptors = protocol.loadDescriptors();
