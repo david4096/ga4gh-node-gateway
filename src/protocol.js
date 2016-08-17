@@ -37,7 +37,7 @@ function loadDescriptors() {
   return filterServices().map(function(filename) {
     // FIXME there has to be a better way to include dependencies here
     // Editing the schemas paths was done ...
-    return grpc.load({root: schemasDir, file: 'ga4gh/' + filename});
+    return grpc.load({root: schemasDir, file: namespace + '/' + filename});
   });
 }
 
