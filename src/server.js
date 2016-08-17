@@ -6,6 +6,8 @@ var express = require('express');
 
 var bodyParser = require('body-parser');
 
+var config = require('../config')
+
 // This file connects grpc, express, and the controller functions by reflecting
 // on the service descriptions in protocol buffers.
 
@@ -14,7 +16,7 @@ exports.main = function () {
   // Set up grpc services and attach methods
   // TODO refactor to use protocol.services
   var server = rpc.loadServer(descriptors);
-  server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
+  server.bind(config.grpc.host + ':' + config.grpc.port, grpc.ServerCredentials.createInsecure());
   server.start();
   
   
@@ -23,8 +25,8 @@ exports.main = function () {
   app.use(bodyParser.json());
   app.use(middleware.createProxy(protocol.services()));
   
-  app.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
+  app.listen(config.http.port, function () {
+    console.log('Example app listening on port ' + config.http.port);
   });
 }
 

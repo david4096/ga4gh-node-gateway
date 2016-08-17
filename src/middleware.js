@@ -50,14 +50,16 @@ exports.createProxy = function(services) {
         endpoints.push({url: endpoint.options['(google.api.http).post'], method: 'post'})
         router.post(endpoint.options['(google.api.http).post'], expressHandler(endpoint));
       } else {
+        // FIXME remove this ugly hack that parses URL variables /variants/{variant_id}
         var url = endpoint.options['(google.api.http).get'].replace('{',':').replace('}','');
         endpoints.push({url: url, method: 'get'})
         router.get(url, expressGetHandler(endpoint));
       }
     });
   });
+  // A default endpoint that returns the loaded routes
   router.get('/endpoints', function(req, res) {
-    res.send({endpoints: endpoints})
+    res.send({endpoints: endpoints});
   })
   return router;
 }

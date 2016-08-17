@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "An implementation of the GA4GH interface in node.js",
   "scripts": {
-    "start": "nodemon --watch schemas/src/main/proto/ga4gh/. --watch src -e proto,js src/server.js",
+    "start": "nodemon --watch schemas/src/main/proto/ga4gh/. --watch src -e proto,js src/server.js --watch config.js",
     "lint": "eslint src"
   },
   "repository": {
