@@ -4,7 +4,7 @@ var bodyParser = require('body-parser'),
     grpc = require('grpc'),
     winston = require('winston');
 
-var middleware = require('./middleware'),
+var router = require('./router'),
     protocol = require('./protocol');
     rpc = require('./rpc'),
     config = require('../config');
@@ -40,7 +40,7 @@ exports.main = function () {
       return false;
     }
   }));
-  app.use(middleware.createProxy(protocol.services()));
+  app.use(router.router(protocol.services()));
   app.use(expressWinston.errorLogger({
     transports: [
       new winston.transports.Console({

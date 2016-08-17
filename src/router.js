@@ -41,7 +41,7 @@ function firstToLower(str) {
 
 // TODO use http descriptor proto to keep version parity, instead of hardcoding
 //     key values "(google.api.http).post"
-exports.createProxy = function(services) {
+exports.router = function(services) {
   var router = express.Router();
   var endpoints = [];
   // Reflect on the service keys to generate HTTP endpoints
