@@ -1,10 +1,11 @@
 // Protocol takes a directory that specifies gRPC services in some number
 // of files.
 
-var grpc = require('grpc');
-var fs = require('fs');
-
 var config = require('../config');
+
+var grpc = require('grpc');
+
+var fs = require('fs');
 
 var schemasDir = config.schema_path;
 var namespace = 'ga4gh';
@@ -21,7 +22,7 @@ function services() {
         return key.indexOf('Service') != -1;
       });
       return descriptor[namespace][keys[0]];
-    })
+    });
 }
 
 function filterServices() {
@@ -29,7 +30,7 @@ function filterServices() {
   // FIXME by loading all the proto in the directory and selecting on class name
   return loadProto().filter(function(filename) {
       return filename.indexOf('service.proto') != -1;
-  })
+  });
 }
 
 function loadDescriptors() {
@@ -40,4 +41,4 @@ function loadDescriptors() {
   });
 }
 
-module.exports = {loadDescriptors: loadDescriptors, services: services}
+module.exports = {loadDescriptors: loadDescriptors, services: services};

@@ -1,8 +1,11 @@
-var grpc = require('grpc');
 var fs = require('fs');
-var protocol = require('./protocol');
 
-var host = 'localhost:50051';
+var grpc = require('grpc');
+
+var config = require('../config'),
+    protocol = require('./protocol');
+
+var host = 'localhost:' + config.grpc.port;
 
 var credentials = grpc.credentials.createInsecure();
 
@@ -11,7 +14,7 @@ var clients = protocol.loadDescriptors();
 if (require.main === module) {
   var aaac = new clients[0].ga4gh.AlleleAnnotationService(host, credentials);
   setInterval(function() {
-    console.log('reqing')
+    console.log('reqing');
     aaac.searchVariantAnnotations('asd', function(err, res) {
       console.log(res);
     });

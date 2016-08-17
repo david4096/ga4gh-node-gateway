@@ -1,4 +1,5 @@
 var grpc = require('grpc');
+
 var controllers = require('./controllers/index');
 
 // FIXME a hack that is part of allowing mock methods for each service endpoint.
@@ -15,8 +16,8 @@ function getMethod(methodname) {
   } else {
     return function(call, callback) {
       // By default we print an empty response.
-      callback(null, {})
-    }
+      callback(null, {});
+    };
   }
 }
 
@@ -48,7 +49,7 @@ exports.loadServer = function(descriptors) {
     keys.map(function(key) {
       var methodMap = buildMethodMap(descriptor[namespace][key].service.children);
       server.addProtoService(descriptor[namespace][key].service, methodMap);
-    })
+    });
   });
   return server;
-}
+};
