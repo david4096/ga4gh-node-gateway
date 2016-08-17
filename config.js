@@ -1,4 +1,5 @@
 var development = {
+  namespace: 'ga4gh',
   grpc: {
     port: 50051,
     host: "0.0.0.0"         // Accept requests from any
@@ -10,6 +11,7 @@ var development = {
 };
 
 var production = {
+  namespace: 'ga4gh',
   grpc: {
     port: 50051,
     host: "0.0.0.0"         // Accept requests from any

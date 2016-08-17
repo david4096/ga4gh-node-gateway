@@ -1,11 +1,10 @@
 var grpc = require('grpc');
 
 
-var controllers = require('./controllers/index');
+var config = require('../config'),
+    controllers = require('./controllers/index');
 
-// FIXME a hack that is part of allowing mock methods for each service endpoint.
-// Could be removed with a better usage of the grpc API for making method maps
-var namespace = 'ga4gh';
+var namespace = config.namespace;
 
 // Allows us to define methods as we go and hook them up by name to the schemas.
 // It should be possible to determine if a method is streaming or not and get it

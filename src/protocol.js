@@ -1,5 +1,6 @@
-// Protocol takes a directory that specifies gRPC services in some number
-// of files.
+// `protocol.js` takes a directory that specifies gRPC services in some number
+// of files. It filters those files for the service descriptors and loads
+// them using the `grpc` module.
 
 var config = require('../config');
 
@@ -8,7 +9,8 @@ var grpc = require('grpc');
 var fs = require('fs');
 
 var schemasDir = config.schema_path;
-var namespace = 'ga4gh';
+
+var namespace = config.namespace;
 
 function loadProto() {
   return fs.readdirSync(schemasDir + '/' + namespace);

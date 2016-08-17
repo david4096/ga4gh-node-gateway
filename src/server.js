@@ -1,16 +1,16 @@
+// This file connects grpc and express interfaces by reflecting
+// on the service descriptions in protocol buffers.
+
 var bodyParser = require('body-parser'),
     express = require('express'),
     expressWinston = require('express-winston'),
     grpc = require('grpc'),
     winston = require('winston');
 
-var router = require('./router'),
-    protocol = require('./protocol');
-    rpc = require('./rpc'),
-    config = require('../config');
-
-// This file connects grpc, express, and the controller functions by reflecting
-// on the service descriptions in protocol buffers.
+var config = require('../config'),
+    protocol = require('./protocol'),
+    router = require('./router'),
+    rpc = require('./rpc');
 
 exports.main = function () {
   var descriptors = protocol.loadDescriptors();
