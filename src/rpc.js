@@ -12,7 +12,10 @@ var namespace = 'ga4gh';
 function getMethod(methodname) {
   var lower = firstToLower(methodname);
   if (controllers[lower]) {
-    return controllers[lower];
+    return function(call, callback) {
+      console.log(call);
+      return controllers[lower](call, callback);
+    };
   } else {
     return function(call, callback) {
       // By default we print an empty response.
@@ -53,3 +56,5 @@ exports.loadServer = function(descriptors) {
   });
   return server;
 };
+
+exports.getMethod = getMethod;

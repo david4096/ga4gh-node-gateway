@@ -1,22 +1,11 @@
 var express = require('express');
 
-var controllers = require('./controllers/index');
-
-function getMethod(methodname) {
-  var lower = firstToLower(methodname);
-  if (controllers[lower]) {
-    return controllers[lower];
-  } else {
-    return function(call, callback) {
-      // By default we print an empty response.
-      callback(null, {});
-    };
-  }
-}
+var controllers = require('./controllers/index'),
+    rpc = require('./rpc');
 
 function expressHandler(endpoint) {
   return function(req, res) {
-    getMethod(endpoint.name)({request: req.body}, function(err, doc) {
+    rpc.getMethod(endpoint.name)({request: req.body}, function(err, doc) {
       res.send(doc);
       res.end();
     });
@@ -27,7 +16,7 @@ function expressHandler(endpoint) {
 // request body.
 function expressGetHandler(endpoint) {
   return function(req, res) {
-    getMethod(endpoint.name)({request: req.params}, function(err, doc) {
+    rpc.getMethod(endpoint.name)({request: req.params}, function(err, doc) {
       res.send(doc);
       res.end();
     });
