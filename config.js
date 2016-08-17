@@ -4,7 +4,7 @@ var development = {
     host: "0.0.0.0"         // Accept requests from any
   },
   http: {
-    port: 3001
+    port: 3000
   },
   schema_path: 'schemas/src/main/proto'
 };

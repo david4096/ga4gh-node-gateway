@@ -1,8 +1,9 @@
 var chakram = require('chakram'),
     expect = chakram.expect,
-    protocol = require('../src/protocol');
+    protocol = require('../src/protocol')
+    config = require('../config');
 
-var baseurl = 'http://localhost:3000';
+var baseurl = 'http://localhost:' + config.http.port;
 
 var namespace = 'ga4gh';
 
