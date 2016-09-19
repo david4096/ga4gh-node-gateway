@@ -60,7 +60,9 @@ exports.router = function(services) {
       }
     });
   });
-  // A default endpoint that returns the loaded routes
+  // Assist with API discovery...
+  // TODO use a standard format for this as opposed to the custom endpoint descriptions
+  // A default endpoint that returns the loaded routes.
   router.get('/endpoints', function(req, res) {
     res.send({endpoints: endpoints});
   });

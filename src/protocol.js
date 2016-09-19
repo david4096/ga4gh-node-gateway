@@ -2,6 +2,8 @@
 // of files. It filters those files for the service descriptors and loads
 // them using the `grpc` module.
 
+// TODO refactor function name `loadDescriptors`... to `descriptors`?
+
 var config = require('../config');
 
 var grpc = require('grpc');

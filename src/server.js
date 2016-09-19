@@ -1,5 +1,6 @@
 // This file connects grpc and express interfaces by reflecting
-// on the service descriptions in protocol buffers.
+// on the service descriptions in protocol buffers. Start by running
+// `node src/server.js`.
 
 var bodyParser = require('body-parser'),
     express = require('express'),
@@ -20,10 +21,10 @@ exports.main = function () {
   server.bind(config.grpc.host + ':' + config.grpc.port, grpc.ServerCredentials.createInsecure());
   server.start();
 
-
   // Set up express endpoints and attach the methods.
   var app = express();
   app.use(bodyParser.json());
+  // TODO make logging transports configurable either in config.js or some other convention
   app.use(expressWinston.logger({
     transports: [
       new winston.transports.Console({
@@ -40,7 +41,10 @@ exports.main = function () {
       return false;
     }
   }));
+  // Attach the routes to the express app
   app.use(router.router(protocol.services()));
+  // Set up error logging
+  // TODO make logging transports configurable either in config.js or some other convention
   app.use(expressWinston.errorLogger({
     transports: [
       new winston.transports.Console({
@@ -50,10 +54,12 @@ exports.main = function () {
     ]
   }));
   app.listen(config.http.port, function () {
+    // TODO remove in favor of unified debug logging
     console.log('Example app listening on port ' + config.http.port);
   });
 };
 
+// When the module is run directly, we should execute main.
 if (require.main === module) {
   exports.main();
 }
