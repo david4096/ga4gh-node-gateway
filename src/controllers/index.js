@@ -1,6 +1,7 @@
 var variants = require('./variants');
-    features = require('./features');
-    metadata = require('./metadata');
+var features = require('./features');
+var  metadata = require('./metadata');
+var rna = require('./rna');
 
 var extend = require('util')._extend;
 
@@ -8,4 +9,4 @@ var extend = require('util')._extend;
 // To make the controllers attached by name all of them must be
 // in the same namespace.
 
-module.exports = extend(metadata, extend(variants, features));
+module.exports = extend(metadata, extend(rna, variants, features));
