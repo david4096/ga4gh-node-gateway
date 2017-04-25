@@ -5,12 +5,17 @@
 
 var express = require('express');
 
-var controllers = require('./controller'),
-    rpc = require('./rpc');
+var controllers = require('./controller');
+var rpc = require('./rpc');
 
+// Returns an express handler for post messages by getting the method by
+// name from the controller module.
 function expressHandler(endpoint) {
   // TODO add a middleware that deserializes the request body's camelcased
   // names into the protobuf
+  // TODO refactor to provide controller functions with the complete request
+  // and result objects so controllers can write streams.
+  // TODO add error handling
   return function(req, res) {
     rpc.getMethod(endpoint.name)({request: req.body}, function(err, doc) {
       res.send(doc);

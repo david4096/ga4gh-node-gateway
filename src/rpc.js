@@ -1,8 +1,8 @@
 var grpc = require('grpc');
 
 
-var config = require('../config'),
-    controllers = require('./controller');
+var config = require('../config');
+var controllers = require('./controller');
 
 var namespace = config.namespace;
 
