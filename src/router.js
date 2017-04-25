@@ -5,7 +5,7 @@
 
 var express = require('express');
 
-var controllers = require('./controllers/index'),
+var controllers = require('./controller'),
     rpc = require('./rpc');
 
 function expressHandler(endpoint) {
