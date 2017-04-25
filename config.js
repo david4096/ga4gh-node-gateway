@@ -19,8 +19,7 @@ var development = {
   http: {
     port: 3000
   },
-  schema_path: 'schemas/src/main/proto',
-  backend: 'xena'
+  controller: 'ga4gh-xena-controller'
 };
 
 var production = {
@@ -32,8 +31,7 @@ var production = {
   http: {
     port: 8080
   },
-  schema_path: 'schemas/src/main/proto',
-  backend: 'xena'
+  controller: 'ga4gh-xena-controller'
 };
 
 if (process.env.NODE_ENV == 'production') {
