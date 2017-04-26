@@ -2,6 +2,7 @@
   "name": "ga4gh-node-gateway",
   "version": "1.0.0",
   "description": "An implementation of the GA4GH interface in node.js",
+  "main": "src/server.js",
   "scripts": {
     "babel-node": "babel-node",
     "start": "nodemon --exec npm run babel-node --watch schemas/src/main/proto/ga4gh/. --watch src -e proto,js src/server.js --watch config.js --watch ../ga4gh-xena-controller",
@@ -37,6 +38,7 @@
     "express": "^4.14.0",
     "express-winston": "^2.3.0",
     "ga4gh-base-controller": "file:///home/david/git/ga4gh-base-controller",
+    "ga4gh-schemas": "file:///home/david/git/schemas",
     "ga4gh-xena-controller": "file:///home/david/git/ga4gh-xena-controller",
     "grpc": "^1.0.0-pre1",
     "winston": "^2.3.1"
