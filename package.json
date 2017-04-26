@@ -37,9 +37,9 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "express-winston": "^2.3.0",
-    "ga4gh-base-controller": "file:///home/david/git/ga4gh-base-controller",
+    "ga4gh-base-controller": "file:///home/david/git/node/ga4gh-base-controller",
     "ga4gh-schemas": "file:///home/david/git/schemas",
-    "ga4gh-xena-controller": "file:///home/david/git/ga4gh-xena-controller",
+    "ga4gh-xena-controller": "file:///home/david/git/node/ga4gh-xena-controller",
     "grpc": "^1.0.0-pre1",
     "winston": "^2.3.1"
   }

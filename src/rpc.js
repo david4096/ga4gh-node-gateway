@@ -10,12 +10,10 @@ var namespace = config.namespace;
 // It should be possible to determine if a method is streaming or not and get it
 // from a different controller. No maintaining key-value maps!
 function getMethod(methodname) {
-  console.log(controllers);
-  var lower = firstToLower(methodname);
-  if (controllers[lower]) {
+  if (controllers[methodname]) {
     return function(call, callback) {
       console.log(call);
-      return controllers[lower](call, callback);
+      return controllers[methodname](call, callback);
     };
   } else {
     return function(call, callback) {
@@ -31,7 +29,7 @@ function buildMethodMap(methods) {
   // Makes a fake set of initial methods
   var methodMap = {};
   methods.forEach(function(method) {
-    methodMap[firstToLower(method.name)] = getMethod(method.name);
+    methodMap[method.name] = getMethod(method.name);
   });
   return methodMap;
 }
