@@ -18,8 +18,7 @@ var development = {
   },
   http: {
     port: 3000
-  },
-  controller: 'ga4gh-xena-controller'
+  }
 };
 
 var production = {
@@ -30,8 +29,7 @@ var production = {
   },
   http: {
     port: 8080
-  },
-  controller: 'ga4gh-xena-controller'
+  }
 };
 
 if (process.env.NODE_ENV == 'production') {

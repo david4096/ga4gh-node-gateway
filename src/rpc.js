@@ -2,7 +2,7 @@ var grpc = require('grpc');
 
 
 var config = require('../config');
-var controllers = require('./controller');
+var controllers;
 
 var namespace = config.namespace;
 
@@ -10,6 +10,7 @@ var namespace = config.namespace;
 // It should be possible to determine if a method is streaming or not and get it
 // from a different controller. No maintaining key-value maps!
 function getMethod(methodname) {
+  console.log(controllers);
   var lower = firstToLower(methodname);
   if (controllers[lower]) {
     return function(call, callback) {
@@ -56,5 +57,9 @@ exports.loadServer = function(descriptors) {
   });
   return server;
 };
+
+exports.setController = function(controller) {
+  controllers = controller;
+}
 
 exports.getMethod = getMethod;

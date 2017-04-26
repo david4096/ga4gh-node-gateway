@@ -8,17 +8,32 @@ var bodyParser = require('body-parser'),
     grpc = require('grpc'),
     winston = require('winston');
 
-var config = require('../config'),
-    protocol = require('./protocol'),
+var protocol = require('./protocol'),
+    config = require('../config'),
     router = require('./router'),
     rpc = require('./rpc');
 
-exports.main = function () {
+exports.main = function (options) {
+  if (!options) {
+    console.log('no options using base controller')
+    rpc.setController(require('ga4gh-base-controller'));
+    options = config;
+  }
   var descriptors = protocol.loadDescriptors();
+  if (typeof options.controller !== "undefined") {
+    console.log('try setting a controller')
+    try {
+      rpc.setController(options.controller);
+    } catch(e) {
+      console.log("Failed to load controller from options, using ga4gh-base-controller")
+      rpc.setController(require('ga4gh-base-controller'));
+    }
+  }
+
   // Set up grpc services and attach methods
   // TODO refactor to use protocol.services
   var server = rpc.loadServer(descriptors);
-  server.bind(config.grpc.host + ':' + config.grpc.port, grpc.ServerCredentials.createInsecure());
+  server.bind(options.grpc.host + ':' + options.grpc.port, grpc.ServerCredentials.createInsecure());
   server.start();
 
   // Set up express endpoints and attach the methods.
@@ -53,9 +68,9 @@ exports.main = function () {
       })
     ]
   }));
-  app.listen(config.http.port, function () {
+  app.listen(options.http.port, function () {
     // TODO remove in favor of unified debug logging
-    console.log('Example app listening on port ' + config.http.port);
+    console.log('Example app listening on port ' + options.http.port);
   });
 };
 

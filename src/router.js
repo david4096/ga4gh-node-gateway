@@ -5,7 +5,6 @@
 
 var express = require('express');
 
-var controllers = require('./controller');
 var rpc = require('./rpc');
 
 // Returns an express handler for post messages by getting the method by

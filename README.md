@@ -1,6 +1,27 @@
-# ga4gh-node-server
+# ga4gh-node-gateway
 
-The goal of this project is to minimize the amount of effort required for modifications to the GA4GH schemas to result in usable software. It does not attempt to be a large scale genomics server, but a testing ground for query patterns and message structures.
+This software presents a GRPC and HTTP 1.1 interface according to the GA4GH
+schemas. It provides a way to easily attach controllers to access genomics
+data.
+
+It relies on Google's GRPC module, express, and the GA4GH schemas.
+
+To use this software, name a module in the `config.js` that exposes functions
+named as they are in the GA4GH schemas.
+
+```
+function mycontoller = {};
+
+mycontroller.SearchVariants = function(call, callback) {
+  callback(null, {variants: [{id: 1}]})
+}
+
+module.exports = mycontroller;
+```
+
+Your server now has two components, the ga4gh-node-gateway and your controller.
+Simply start the server and make requests to the endpoints that serve the named
+method to see your requests fulfilled.
 
 If there is a way to generate code, let's find it!
 
