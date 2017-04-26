@@ -4,7 +4,7 @@ This software presents a GRPC and HTTP 1.1 interface according to the GA4GH
 schemas. It provides a way to easily attach controllers to access genomics
 data.
 
-It relies on Google's GRPC module, express, and the GA4GH schemas.
+It relies on Google's [GRPC](http://grpc.io) module, [express](http://expressjs.com/), and the [ga4gh-schemas](https://github.com/ga4gh/ga4gh-schemas).
 
 To use this software, import it into your project and set a controller module
 in the options. `npm install ga4gh-node-gateway --save`
@@ -34,7 +34,8 @@ gateway.main(options);
 ```
 
 Your server now has two components, the ga4gh-node-gateway and your controller.
-Running main will run the the server forever.
+Running main will run the the server forever. For more see [ga4gh-node-server](https://github.com/david4096/ga4gh-node-server), which can
+be easily forked to create your own implementation.
 
 You can now make requests to the endpoints that serve the named
 method to see your requests fulfilled.
