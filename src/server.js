@@ -8,7 +8,7 @@ var bodyParser = require('body-parser'),
     grpc = require('grpc'),
     winston = require('winston');
 
-var protocol = require('./protocol'),
+var protocol = require('ga4gh-schemas'),
     config = require('../config'),
     router = require('./router'),
     rpc = require('./rpc');

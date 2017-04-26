@@ -3,7 +3,7 @@ var fs = require('fs');
 var grpc = require('grpc');
 
 var config = require('../config'),
-    protocol = require('./protocol');
+    protocol = require('ga4gh-schemas');
 
 var host = 'localhost:' + config.grpc.port;
 
