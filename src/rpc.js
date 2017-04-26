@@ -58,8 +58,8 @@ exports.loadServer = function(descriptors) {
   return server;
 };
 
-exports.setController = function(controller) {
-  controllers = controller;
+exports.setController = function(controller, options) {
+  controllers = controller(options);
 }
 
 exports.getMethod = getMethod;

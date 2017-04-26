@@ -16,7 +16,7 @@ var protocol = require('ga4gh-schemas'),
 exports.main = function (options) {
   if (!options) {
     console.log('no options using base controller')
-    rpc.setController(require('ga4gh-base-controller'));
+    rpc.setController(require('ga4gh-base-controller'), {});
     options = config;
   }
   var descriptors = protocol.loadDescriptors();
